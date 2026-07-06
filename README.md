@@ -26,7 +26,15 @@ Zero-config on Vercel — import the repo and deploy.
 Characters use emoji placeholders. Drop images into `public/characters/` and set the
 `image` field in [lib/config.ts](lib/config.ts) (e.g. `image: "/characters/regular.png"`).
 
-## Leaderboard backend
+## Online leaderboard (Neon Postgres)
 
-The leaderboard is localStorage-only. [lib/leaderboard.ts](lib/leaderboard.ts) has async
-signatures and inline notes for swapping in Supabase later without touching the UI.
+Scores are saved to a shared Neon database via `/api/scores` when `DATABASE_URL` is set,
+with localStorage as the automatic fallback (unconfigured or offline). The `scores` table
+is created automatically on first use — no manual SQL needed.
+
+Setup:
+
+1. Create a free database at [neon.tech](https://neon.tech) (or add the Neon integration
+   from the Vercel marketplace, which sets the env var for you).
+2. Copy the connection string into `.env.local` (see [.env.example](.env.example)) for
+   local dev, and add `DATABASE_URL` to your Vercel project's environment variables.

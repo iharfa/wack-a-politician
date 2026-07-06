@@ -2,19 +2,11 @@ import type { LeaderboardEntry } from "./types";
 
 const KEY = "wap-leaderboard";
 
-// localStorage-backed leaderboard service. Signatures are async so a remote
-// backend can drop in without touching the UI.
-//
-// To swap in Supabase later:
-//   1. `npm i @supabase/supabase-js` and create a client from
-//      NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.
-//   2. Create table `scores` (nickname text, score int4, mode text,
-//      accuracy float4, best_streak int4, date timestamptz).
-//   3. getEntries -> supabase.from('scores').select('*').order('score', { ascending: false }).limit(50)
-//   4. addEntry   -> supabase.from('scores').insert(entry)
-//   5. clearEntries stays local-only (or becomes an admin action).
+// Shared leaderboard backed by Neon Postgres via /api/scores when DATABASE_URL
+// is configured (see README). Falls back to this device's localStorage when the
+// API is unconfigured or unreachable (e.g. offline), so the game always works.
 
-export async function getEntries(): Promise<LeaderboardEntry[]> {
+function localGet(): LeaderboardEntry[] {
   try {
     const raw = localStorage.getItem(KEY);
     const all: LeaderboardEntry[] = raw ? JSON.parse(raw) : [];
@@ -24,11 +16,32 @@ export async function getEntries(): Promise<LeaderboardEntry[]> {
   }
 }
 
-export async function addEntry(entry: LeaderboardEntry): Promise<void> {
-  const all = [...(await getEntries()), entry].sort((a, b) => b.score - a.score).slice(0, 50);
-  localStorage.setItem(KEY, JSON.stringify(all));
+function localAdd(entry: LeaderboardEntry) {
+  try {
+    localStorage.setItem(KEY, JSON.stringify([...localGet(), entry].sort((a, b) => b.score - a.score).slice(0, 50)));
+  } catch {}
 }
 
+export async function getEntries(): Promise<LeaderboardEntry[]> {
+  try {
+    const res = await fetch("/api/scores");
+    if (res.ok) return await res.json();
+  } catch {}
+  return localGet();
+}
+
+export async function addEntry(entry: LeaderboardEntry): Promise<void> {
+  localAdd(entry); // keep a device-local copy too — works offline
+  try {
+    await fetch("/api/scores", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(entry),
+    });
+  } catch {}
+}
+
+// Clears only this device's scores; the shared board is append-only from clients.
 export async function clearEntries(): Promise<void> {
   localStorage.removeItem(KEY);
 }
