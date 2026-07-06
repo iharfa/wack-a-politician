@@ -12,10 +12,11 @@ interface Props {
   showHint: boolean;
   entity?: Entity;
   fx: (FxEvent & { id: number })[];
+  skin: boolean;
   onWhack: (hole: number) => void;
 }
 
-export default function Hole({ index, hint, showHint, entity, fx, onWhack }: Props) {
+export default function Hole({ index, hint, showHint, entity, fx, skin, onWhack }: Props) {
   return (
     <button
       onPointerDown={(e) => {
@@ -28,7 +29,7 @@ export default function Hole({ index, hint, showHint, entity, fx, onWhack }: Pro
       <div className="absolute inset-x-2 bottom-1 h-1/3 rounded-[50%] bg-black/60" />
       {entity &&
         (entity.kind === "character" ? (
-          <Character entity={entity} />
+          <Character key={entity.id} entity={entity} skin={skin} />
         ) : (
           <div className="gift pointer-events-none absolute inset-0 flex items-center justify-center">
             <span className="flex h-3/5 w-3/5 items-center justify-center rounded-full bg-cyan-400/90 text-3xl ring-4 ring-cyan-200 sm:text-4xl">

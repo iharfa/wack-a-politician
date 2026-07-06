@@ -9,10 +9,11 @@ interface Props {
   entities: Entity[];
   fx: (FxEvent & { id: number })[];
   showHints: boolean;
+  skin: boolean;
   onWhack: (hole: number) => void;
 }
 
-export default function GameBoard({ entities, fx, showHints, onWhack }: Props) {
+export default function GameBoard({ entities, fx, showHints, skin, onWhack }: Props) {
   return (
     <div className="mx-auto w-full max-w-md">
       <div className="mb-1 flex justify-center gap-4 text-lg opacity-70" aria-hidden>
@@ -31,6 +32,7 @@ export default function GameBoard({ entities, fx, showHints, onWhack }: Props) {
             showHint={showHints}
             entity={entities.find((e) => e.hole === i)}
             fx={fx.filter((f) => f.hole === i)}
+            skin={skin}
             onWhack={onWhack}
           />
         ))}

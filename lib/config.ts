@@ -71,6 +71,16 @@ export const CHARACTERS: Record<CharacterType, CharacterDef> = {
   bonus: { name: "The Big Cheese", emoji: "🤑", image: null, points: 200, bg: "bg-yellow-300", ring: "ring-yellow-400" },
 };
 
+// "Promoted mode" skin — unlocked by the start-screen hammer easter egg.
+// Drop real politician images into /public/skin with these exact names.
+export const PROMOTED_IMAGES: Record<CharacterType, string> = {
+  regular: "/skin/regular.png",
+  fast: "/skin/fast.png",
+  tank: "/skin/tank.png",
+  decoy: "/skin/decoy.png",
+  bonus: "/skin/bonus.png",
+};
+
 export const POWERUPS: Record<PowerupType, { name: string; emoji: string; duration: number }> = {
   freeze: { name: "Freeze Time", emoji: "🧊", duration: 5000 },
   double: { name: "Double Points", emoji: "💰", duration: 8000 },

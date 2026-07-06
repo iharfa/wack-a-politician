@@ -31,6 +31,7 @@ export default function Home() {
   const [showSettings, setShowSettings] = useState(false);
   const [fx, setFx] = useState<(FxEvent & { id: number })[]>([]);
   const fxId = useRef(0);
+  const [promoted, setPromoted] = useState(false);
   const [installEvt, setInstallEvt] = useState<InstallPromptEvent | null>(null);
 
   const addFx = useCallback((f: FxEvent) => {
@@ -45,8 +46,14 @@ export default function Home() {
     try {
       const raw = localStorage.getItem("wap-settings");
       if (raw) setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(raw) });
+      setPromoted(localStorage.getItem("wap-promoted") === "1");
     } catch {}
   }, []);
+
+  const updatePromoted = (v: boolean) => {
+    setPromoted(v);
+    localStorage.setItem("wap-promoted", v ? "1" : "0");
+  };
 
   const updateSettings = (s: Settings) => {
     setSettings(s);
@@ -97,11 +104,13 @@ export default function Home() {
             installEvt?.prompt();
             setInstallEvt(null);
           }}
+          promoted={promoted}
+          onSetPromoted={updatePromoted}
         />
       ) : (
         <div className="flex h-full touch-none flex-col justify-center gap-3 p-3 pb-[env(safe-area-inset-bottom)]">
           <ScorePanel state={state} />
-          <GameBoard entities={state.entities} fx={fx} showHints={settings.keyboardHints} onWhack={whack} />
+          <GameBoard entities={state.entities} fx={fx} showHints={settings.keyboardHints} skin={promoted} onWhack={whack} />
           <button onClick={quit} className="mx-auto text-sm text-indigo-300">
             ✕ Quit round
           </button>
