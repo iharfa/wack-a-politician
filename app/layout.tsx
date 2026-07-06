@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import { Archivo, Big_Shoulders } from "next/font/google";
+import "../tokens.css";
 import "./globals.css";
+
+const display = Big_Shoulders({ subsets: ["latin"], variable: "--font-bsd", adjustFontFallback: false });
+const body = Archivo({ subsets: ["latin"], variable: "--font-archivo" });
 
 export const metadata: Metadata = {
   title: "Whack-a-Politician",
@@ -10,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#4f46e5",
+  themeColor: "#1b3f66",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -20,7 +25,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="antialiased">{children}</body>
     </html>
   );

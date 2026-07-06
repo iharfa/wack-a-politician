@@ -6,7 +6,7 @@ export default function PowerupBadge({ type, endsAt }: { type: PowerupType; ends
   const secs = endsAt ? Math.max(0, Math.ceil((endsAt - Date.now()) / 1000)) : null;
   const p = POWERUPS[type];
   return (
-    <span className="flex items-center gap-1 rounded-full bg-cyan-500/20 px-2 py-0.5 text-xs font-bold text-cyan-200 ring-1 ring-cyan-400/50">
+    <span className="flex items-center gap-1 border-2 border-[var(--color-ink)] bg-[var(--color-accent-2)] px-2 py-0.5 text-xs font-bold uppercase text-[var(--color-paper)] shadow-[2px_2px_0_var(--color-ink)]">
       <span>{p.emoji}</span>
       <span>{p.name}</span>
       {secs !== null && <span className="tabular-nums">{secs}s</span>}

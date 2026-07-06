@@ -1,4 +1,4 @@
-const CACHE = "wap-v1";
+const CACHE = "wap-v2";
 const PRECACHE = ["/", "/manifest.json", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (e) => {

@@ -39,20 +39,23 @@ export default function GameOverModal({ state, onPlayAgain, onHome }: Props) {
   ];
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4">
-      <div className="w-full max-w-sm rounded-3xl bg-indigo-950 p-6 ring-4 ring-indigo-700">
-        <h2 className="text-center text-2xl font-black text-amber-400">TIME&apos;S UP! 🔔</h2>
-        <div className="my-4 grid grid-cols-2 gap-2 text-center">
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-[var(--color-ink)]/70 p-4">
+      <div className="w-full max-w-sm border-2 border-[var(--color-ink)] bg-[var(--color-paper)] p-6 shadow-[6px_6px_0_var(--color-ink)]">
+        <h2 className="display text-center text-3xl text-[var(--color-accent)]">Time&apos;s up.</h2>
+        <div className="ornament my-2 text-center" aria-hidden>
+          ✱ ✱ ✱ ✱
+        </div>
+        <div className="mb-4 grid grid-cols-2 gap-2 text-center">
           {stats.map(([label, value]) => (
-            <div key={label} className="rounded-xl bg-indigo-900/70 p-2 first:col-span-2">
-              <div className="text-[10px] font-semibold uppercase tracking-wide text-indigo-300">{label}</div>
-              <div className="text-xl font-black tabular-nums">{value}</div>
+            <div key={label} className="border-2 border-[var(--color-ink)] bg-[var(--color-paper-2)] p-2 first:col-span-2">
+              <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--color-muted)]">{label}</div>
+              <div className="display text-2xl tabular-nums">{value}</div>
             </div>
           ))}
         </div>
 
         {saved ? (
-          <p className="mb-3 text-center font-bold text-emerald-400">✓ Saved to leaderboard!</p>
+          <p className="mb-3 text-center font-bold text-[var(--color-accent-2)]">◆ Saved to the leaderboard.</p>
         ) : (
           <form onSubmit={save} className="mb-3 flex gap-2">
             <input
@@ -61,24 +64,24 @@ export default function GameOverModal({ state, onPlayAgain, onHome }: Props) {
               placeholder="Your nickname"
               maxLength={20}
               required
-              className="min-w-0 flex-1 rounded-xl bg-indigo-900 px-3 py-2 text-white placeholder-indigo-400 ring-2 ring-indigo-700 outline-none focus:ring-amber-400"
+              className="min-w-0 flex-1 border-2 border-[var(--color-ink)] bg-[var(--color-paper)] px-3 py-2 font-bold text-[var(--color-ink)] outline-none placeholder:text-[var(--color-muted)]"
             />
             <button
               type="submit"
               disabled={!nick.trim()}
-              className="rounded-xl bg-amber-400 px-4 font-bold text-indigo-950 disabled:opacity-40"
+              className="btn bg-[var(--color-accent)] px-4 text-[var(--color-accent-ink)] disabled:opacity-40"
             >
               Save
             </button>
           </form>
         )}
 
-        <div className="flex gap-2">
-          <button onClick={onPlayAgain} className="flex-1 rounded-xl bg-emerald-600 py-3 font-bold">
-            🔁 Play again
+        <div className="flex gap-2.5">
+          <button onClick={onPlayAgain} className="btn flex-1 bg-[var(--color-accent-2)] py-3 text-[var(--color-paper)]">
+            Play again
           </button>
-          <button onClick={onHome} className="flex-1 rounded-xl bg-indigo-800 py-3 font-bold">
-            🏠 Home
+          <button onClick={onHome} className="btn flex-1 bg-[var(--color-paper)] py-3">
+            Home
           </button>
         </div>
       </div>

@@ -88,7 +88,7 @@ export default function Home() {
 
   return (
     <main
-      className={`fixed inset-0 select-none overflow-hidden bg-gradient-to-b from-indigo-950 via-indigo-900 to-purple-950 text-white ${
+      className={`fixed inset-0 select-none overflow-hidden bg-[var(--color-paper)] text-[var(--color-ink)] ${
         settings.reducedMotion ? "reduce-motion" : ""
       }`}
     >
@@ -111,7 +111,7 @@ export default function Home() {
         <div className="flex h-full touch-none flex-col justify-center gap-3 p-3 pb-[env(safe-area-inset-bottom)]">
           <ScorePanel state={state} />
           <GameBoard entities={state.entities} fx={fx} showHints={settings.keyboardHints} skin={promoted} onWhack={whack} />
-          <button onClick={quit} className="mx-auto text-sm text-indigo-300">
+          <button onClick={quit} className="mx-auto text-sm font-bold text-[var(--color-muted)] underline underline-offset-4">
             ✕ Quit round
           </button>
         </div>

@@ -60,15 +60,14 @@ export interface CharacterDef {
   image: string | null;
   points: number;
   bg: string;
-  ring: string;
 }
 
 export const CHARACTERS: Record<CharacterType, CharacterDef> = {
-  regular: { name: "Senator Slick", emoji: "🤵", image: null, points: 10, bg: "bg-sky-300", ring: "ring-sky-500" },
-  fast: { name: "Fast Talker", emoji: "🗣️", image: null, points: 25, bg: "bg-orange-300", ring: "ring-orange-500" },
-  tank: { name: "Thick Skin", emoji: "🎩", image: null, points: 2, bg: "bg-rose-300", ring: "ring-rose-500" },
-  decoy: { name: "Honest Citizen", emoji: "👵", image: null, points: -25, bg: "bg-emerald-300", ring: "ring-emerald-400" },
-  bonus: { name: "The Big Cheese", emoji: "🤑", image: null, points: 200, bg: "bg-yellow-300", ring: "ring-yellow-400" },
+  regular: { name: "Senator Slick", emoji: "🤵", image: null, points: 10, bg: "bg-[var(--color-char-regular)]" },
+  fast: { name: "Fast Talker", emoji: "🗣️", image: null, points: 25, bg: "bg-[var(--color-char-fast)]" },
+  tank: { name: "Thick Skin", emoji: "🎩", image: null, points: 2, bg: "bg-[var(--color-char-tank)]" },
+  decoy: { name: "Honest Citizen", emoji: "👵", image: null, points: -25, bg: "bg-[var(--color-char-decoy)]" },
+  bonus: { name: "The Big Cheese", emoji: "🤑", image: null, points: 200, bg: "bg-[var(--color-char-bonus)]" },
 };
 
 // "Promoted mode" skin — unlocked by the start-screen hammer easter egg.

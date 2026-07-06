@@ -1,9 +1,106 @@
 @import "tailwindcss";
 
+/* Hallmark · genre: editorial · macrostructure: Marquee Hero (title) / function-first (game) · theme: Carnival (drop: Diner Sign) · enrichment: none · design-system: design.md · designed-as-app */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 */
+
 html,
 body {
   overscroll-behavior: none;
-  background: #1e1b4b;
+  background: var(--color-paper);
+  overflow-x: clip;
+}
+
+body {
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-style: normal;
+  text-transform: uppercase;
+  font-variation-settings: "wdth" 110;
+  letter-spacing: 0.02em;
+  line-height: 0.92;
+}
+
+.wordmark {
+  font-size: clamp(3.2rem, 15vw, 5.5rem);
+  line-height: 0.82;
+  letter-spacing: -0.005em;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* poster voice — hard-offset ink shadows, never soft */
+.border-ink {
+  border: 2px solid var(--color-ink);
+}
+.shadow-hard {
+  box-shadow: 4px 4px 0 var(--color-ink);
+}
+.shadow-hard-sm {
+  box-shadow: 2px 2px 0 var(--color-ink);
+}
+.shadow-hard-lg {
+  box-shadow: 6px 6px 0 var(--color-ink);
+}
+
+.btn {
+  border: 2px solid var(--color-ink);
+  box-shadow: 4px 4px 0 var(--color-ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: transform var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+}
+.btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--color-ink);
+}
+
+.ornament {
+  color: var(--color-accent);
+  letter-spacing: 0.5em;
+  user-select: none;
+}
+
+.halftone {
+  background-image: radial-gradient(var(--color-ink) 1.5px, transparent 1.5px);
+  background-size: 12px 12px;
+}
+
+/* marquee banner — the one place loose tracking is allowed */
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  background: var(--color-accent-2);
+  color: var(--color-paper);
+}
+.marquee-track {
+  display: inline-block;
+  padding-block: 0.4rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.8rem;
+  animation: marquee 24s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes pop {
@@ -15,7 +112,7 @@ body {
   }
 }
 .pop {
-  animation: pop 0.12s ease-out;
+  animation: pop 0.12s var(--ease-out);
 }
 
 @keyframes bonk {
@@ -29,7 +126,7 @@ body {
   }
 }
 .bonk {
-  animation: bonk 0.65s ease-out forwards;
+  animation: bonk 0.65s var(--ease-out) forwards;
 }
 
 @keyframes gift-pulse {
@@ -74,7 +171,7 @@ body {
   }
 }
 .crack-in {
-  animation: crack-in 0.25s ease-out forwards;
+  animation: crack-in 0.25s var(--ease-out) forwards;
 }
 
 @keyframes flash {
@@ -86,10 +183,17 @@ body {
   }
 }
 .flash {
-  animation: flash 0.5s ease-out forwards;
+  animation: flash 0.5s var(--ease-out) forwards;
 }
 
-.reduce-motion * {
+.reduce-motion *,
+.reduce-motion .marquee-track {
   animation: none !important;
   transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 }

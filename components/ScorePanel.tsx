@@ -4,9 +4,9 @@ import PowerupBadge from "./PowerupBadge";
 
 function Stat({ label, value, className = "" }: { label: string; value: string; className?: string }) {
   return (
-    <div className="rounded-xl bg-indigo-950/60 px-1 py-1.5">
-      <div className="text-[10px] font-semibold uppercase tracking-wide text-indigo-300">{label}</div>
-      <div className={`text-lg font-black tabular-nums sm:text-xl ${className}`}>{value}</div>
+    <div className="border-2 border-[var(--color-ink)] bg-[var(--color-paper)] px-1 py-1.5 shadow-[3px_3px_0_var(--color-ink)]">
+      <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--color-muted)]">{label}</div>
+      <div className={`display text-lg tabular-nums sm:text-xl ${className}`}>{value}</div>
     </div>
   );
 }
@@ -20,13 +20,13 @@ export default function ScorePanel({ state }: { state: GameState }) {
         <Stat
           label="Time"
           value={`${Math.ceil(state.timeLeft)}s`}
-          className={state.frozen ? "animate-pulse text-cyan-300" : ""}
+          className={state.frozen ? "animate-pulse text-[var(--color-accent-2)]" : ""}
         />
-        <Stat label="Score" value={String(state.score)} className="text-amber-300" />
+        <Stat label="Score" value={String(state.score)} className="text-[var(--color-accent)]" />
         <Stat label="Streak" value={`${state.streak} ×${multiplier(state.streak)}`} />
         <Stat label="Accuracy" value={`${accuracy}%`} />
       </div>
-      <div className="mt-1.5 flex min-h-6 flex-wrap justify-center gap-1.5">
+      <div className="mt-2 flex min-h-6 flex-wrap justify-center gap-1.5">
         {state.shield && <PowerupBadge type="shield" />}
         {state.powerups.map((p) => (
           <PowerupBadge key={p.type} type={p.type} endsAt={p.endsAt} />

@@ -16,14 +16,10 @@ interface Props {
 export default function GameBoard({ entities, fx, showHints, skin, onWhack }: Props) {
   return (
     <div className="mx-auto w-full max-w-md">
-      <div className="mb-1 flex justify-center gap-4 text-lg opacity-70" aria-hidden>
-        <span>🎤</span>
-        <span>🗳️</span>
-        <span>📜</span>
-        <span>🗳️</span>
-        <span>🎤</span>
+      <div className="border-2 border-b-0 border-[var(--color-ink)] bg-[var(--color-accent)] py-1 text-center">
+        <span className="display text-xs text-[var(--color-accent-ink)]">◆ Step right up ◆</span>
       </div>
-      <div className="grid grid-cols-3 gap-2 rounded-3xl bg-indigo-950/60 p-2 ring-4 ring-indigo-700/50 sm:gap-3 sm:p-3">
+      <div className="grid grid-cols-3 gap-2 border-2 border-[var(--color-ink)] bg-[var(--color-accent-2)] p-2 shadow-[6px_6px_0_var(--color-ink)] sm:gap-3 sm:p-3">
         {HINTS.map((h, i) => (
           <Hole
             key={i}
