@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { CHARACTERS, MODES } from "@/lib/config";
 import type { GameMode } from "@/lib/types";
+import InfoModal from "./InfoModal";
 
 interface Props {
   mode: GameMode;
@@ -42,6 +43,7 @@ export default function StartScreen({
 }: Props) {
   const [phase, setPhase] = useState<"idle" | "swing" | "crack" | "gif">("idle");
   const [gifFailed, setGifFailed] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   const tapHammer = () => {
     if (phase !== "idle") return;
@@ -108,6 +110,9 @@ export default function StartScreen({
         <button onClick={onLeaderboard} className="flex-1 rounded-2xl bg-indigo-800 py-3 font-bold">
           🏆 Leaderboard
         </button>
+        <button onClick={() => setShowInfo(true)} className="flex-1 rounded-2xl bg-indigo-800 py-3 font-bold">
+          ℹ️ How to Play
+        </button>
         <button onClick={onSettings} className="flex-1 rounded-2xl bg-indigo-800 py-3 font-bold">
           ⚙️ Settings
         </button>
@@ -127,6 +132,8 @@ export default function StartScreen({
           Watch out: {CHARACTERS.decoy.emoji} {CHARACTERS.decoy.name} is a decoy — hitting them costs points!
         </p>
       </div>
+
+      {showInfo && <InfoModal onClose={() => setShowInfo(false)} />}
 
       {phase === "crack" && (
         <div className="pointer-events-none fixed inset-0 z-50">
