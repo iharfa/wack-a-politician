@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+html,
+body {
+  overscroll-behavior: none;
+  background: #1e1b4b;
+}
+
+@keyframes pop {
+  from {
+    transform: translateY(60%) scale(0.5);
+  }
+  to {
+    transform: translateY(0) scale(1);
+  }
+}
+.pop {
+  animation: pop 0.12s ease-out;
+}
+
+@keyframes bonk {
+  0% {
+    transform: translateY(0) scale(0.7) rotate(-6deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-44px) scale(1.15) rotate(4deg);
+    opacity: 0;
+  }
+}
+.bonk {
+  animation: bonk 0.65s ease-out forwards;
+}
+
+@keyframes gift-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+.gift {
+  animation: gift-pulse 0.8s ease-in-out infinite;
+}
+
+.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+}
