@@ -27,11 +27,12 @@ const idleState = (): GameState => ({
 
 interface Engine extends GameState {
   lastSpawn: number;
+  lastTick: number;
   freezeUntil: number;
   nextId: number;
 }
 
-const freshEngine = (): Engine => ({ ...idleState(), lastSpawn: 0, freezeUntil: 0, nextId: 1 });
+const freshEngine = (): Engine => ({ ...idleState(), lastSpawn: 0, lastTick: 0, freezeUntil: 0, nextId: 1 });
 
 export function useGame(settings: Settings, onFx: (fx: FxEvent) => void) {
   const [state, setState] = useState<GameState>(idleState);
@@ -109,7 +110,11 @@ export function useGame(settings: Settings, onFx: (fx: FxEvent) => void) {
   const tick = () => {
     const s = g.current;
     const now = Date.now();
-    if (now >= s.freezeUntil) s.timeLeft = Math.max(0, s.timeLeft - 0.1);
+    // subtract real elapsed time (browsers throttle intervals in background tabs);
+    // cap at 1s per tick so a suspended tab doesn't drain the round on return
+    const dt = Math.min(1, (now - (s.lastTick || now)) / 1000);
+    s.lastTick = now;
+    if (now >= s.freezeUntil) s.timeLeft = Math.max(0, s.timeLeft - dt);
     s.entities = s.entities.filter((e) => e.expiresAt > now);
     s.powerups = s.powerups.filter((p) => p.endsAt > now);
 
@@ -155,7 +160,14 @@ export function useGame(settings: Settings, onFx: (fx: FxEvent) => void) {
 
   const start = useCallback((mode: GameMode) => {
     stopTimer();
-    g.current = { ...freshEngine(), status: "playing", mode, timeLeft: MODES[mode].duration, lastSpawn: Date.now() };
+    g.current = {
+      ...freshEngine(),
+      status: "playing",
+      mode,
+      timeLeft: MODES[mode].duration,
+      lastSpawn: Date.now(),
+      lastTick: Date.now(),
+    };
     timer.current = setInterval(tick, 100);
     sync();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -168,9 +180,33 @@ export function useGame(settings: Settings, onFx: (fx: FxEvent) => void) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const pausedAt = useRef(0);
+
+  const pause = useCallback(() => {
+    if (g.current.status !== "playing" || !timer.current) return;
+    stopTimer();
+    pausedAt.current = Date.now();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const resume = useCallback(() => {
+    const s = g.current;
+    if (s.status !== "playing" || timer.current) return;
+    // shift every deadline forward by the paused duration so nothing expires mid-pause
+    const delta = Date.now() - pausedAt.current;
+    s.entities = s.entities.map((e) => ({ ...e, expiresAt: e.expiresAt + delta }));
+    s.powerups = s.powerups.map((p) => ({ ...p, endsAt: p.endsAt + delta }));
+    if (s.freezeUntil > pausedAt.current) s.freezeUntil += delta;
+    s.lastSpawn += delta;
+    s.lastTick = Date.now();
+    timer.current = setInterval(tick, 100);
+    sync();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const whack = useCallback((hole: number) => {
     const s = g.current;
-    if (s.status !== "playing") return;
+    if (s.status !== "playing" || !timer.current) return; // ignore input while paused
     const now = Date.now();
     const e = s.entities.find((en) => en.hole === hole && en.expiresAt > now);
     const snd = settingsRef.current.sound;
@@ -249,5 +285,5 @@ export function useGame(settings: Settings, onFx: (fx: FxEvent) => void) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { state, start, whack, quit };
+  return { state, start, whack, quit, pause, resume };
 }

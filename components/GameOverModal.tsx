@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
-import { addEntry } from "@/lib/leaderboard";
+import { useEffect, useState } from "react";
+import { addEntry, getEntries } from "@/lib/leaderboard";
 import type { GameState } from "@/lib/types";
 
 interface Props {
@@ -12,8 +12,28 @@ interface Props {
 export default function GameOverModal({ state, onPlayAgain, onHome }: Props) {
   const [nick, setNick] = useState("");
   const [saved, setSaved] = useState(false);
+  const [qualifies, setQualifies] = useState(false);
+  const [confirmLeave, setConfirmLeave] = useState<(() => void) | null>(null);
   const total = state.hits + state.misses;
   const accuracy = total ? Math.round((state.hits / total) * 100) : 0;
+
+  useEffect(() => {
+    getEntries().then((all) => {
+      const top = all.slice(0, 10);
+      setQualifies(state.score > 0 && (top.length < 10 || state.score > Math.min(...top.map((e) => e.score))));
+    });
+  }, [state.score]);
+
+  // a save that was in flight when the guard opened makes it moot
+  useEffect(() => {
+    if (saved) setConfirmLeave(null);
+  }, [saved]);
+
+  // intercept leaving with an unsaved (non-zero) score
+  const guard = (action: () => void) => {
+    if (!saved && state.score > 0) setConfirmLeave(() => action);
+    else action();
+  };
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,14 +96,37 @@ export default function GameOverModal({ state, onPlayAgain, onHome }: Props) {
           </form>
         )}
 
-        <div className="flex gap-2.5">
-          <button onClick={onPlayAgain} className="btn flex-1 bg-[var(--color-accent-2)] py-3 text-[var(--color-paper)]">
-            Play again
-          </button>
-          <button onClick={onHome} className="btn flex-1 bg-[var(--color-paper)] py-3">
-            Home
-          </button>
-        </div>
+        {confirmLeave ? (
+          <div className="border-2 border-[var(--color-ink)] bg-[var(--color-paper-2)] p-3 text-center">
+            <p className="text-sm font-bold">
+              {qualifies ? "You made the top 10 and haven't saved your score!" : "Your score isn't saved yet."}
+            </p>
+            <p className="mt-1 text-xs text-[var(--color-ink-2)]">Sure you want to pass on it?</p>
+            <div className="mt-3 flex gap-2.5">
+              <button
+                onClick={() => setConfirmLeave(null)}
+                className="btn flex-1 bg-[var(--color-accent)] py-2.5 text-sm text-[var(--color-accent-ink)]"
+              >
+                Go back &amp; save
+              </button>
+              <button onClick={() => confirmLeave()} className="btn flex-1 bg-[var(--color-paper)] py-2.5 text-sm">
+                Skip anyway
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex gap-2.5">
+            <button
+              onClick={() => guard(onPlayAgain)}
+              className="btn flex-1 bg-[var(--color-accent-2)] py-3 text-[var(--color-paper)]"
+            >
+              Play again
+            </button>
+            <button onClick={() => guard(onHome)} className="btn flex-1 bg-[var(--color-paper)] py-3">
+              Home
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

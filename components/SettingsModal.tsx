@@ -2,6 +2,8 @@
 import { clearEntries } from "@/lib/leaderboard";
 import type { Settings } from "@/lib/types";
 
+const CLEAR_PASSWORD = "MuizzuIsDaBest";
+
 interface Props {
   settings: Settings;
   onChange: (s: Settings) => void;
@@ -45,7 +47,13 @@ export default function SettingsModal({ settings, onChange, onClose }: Props) {
         </div>
         <button
           onClick={() => {
-            if (confirm("Clear the local leaderboard? This cannot be undone.")) clearEntries();
+            const pw = prompt("Enter the admin password to clear the leaderboard:");
+            if (pw === null) return;
+            if (pw !== CLEAR_PASSWORD) {
+              alert("Wrong password. The leaderboard stays.");
+              return;
+            }
+            if (confirm("Password accepted. Clear the local leaderboard? This cannot be undone.")) clearEntries();
           }}
           className="btn mt-4 w-full bg-[var(--color-accent)] py-3 text-sm text-[var(--color-accent-ink)]"
         >
