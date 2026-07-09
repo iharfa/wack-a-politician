@@ -1,4 +1,12 @@
-import type { LeaderboardEntry } from "./types";
+import type { GameMode, LeaderboardEntry } from "./types";
+
+export type Period = "day" | "all";
+
+const startOfToday = () => {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString();
+};
 
 const KEY = "wap-leaderboard";
 
@@ -18,16 +26,20 @@ function localGet(): LeaderboardEntry[] {
 
 function localAdd(entry: LeaderboardEntry) {
   try {
-    localStorage.setItem(KEY, JSON.stringify([...localGet(), entry].sort((a, b) => b.score - a.score).slice(0, 50)));
+    localStorage.setItem(KEY, JSON.stringify([...localGet(), entry].sort((a, b) => b.score - a.score).slice(0, 200)));
   } catch {}
 }
 
-export async function getEntries(): Promise<LeaderboardEntry[]> {
+export async function getEntries(mode?: GameMode, period: Period = "all"): Promise<LeaderboardEntry[]> {
+  const since = period === "day" ? startOfToday() : null;
+  const qs = new URLSearchParams();
+  if (mode) qs.set("mode", mode);
+  if (since) qs.set("since", since);
   try {
-    const res = await fetch("/api/scores");
+    const res = await fetch(`/api/scores${qs.size ? `?${qs}` : ""}`);
     if (res.ok) return await res.json();
   } catch {}
-  return localGet();
+  return localGet().filter((e) => (!mode || e.mode === mode) && (!since || e.date >= since));
 }
 
 export async function addEntry(entry: LeaderboardEntry): Promise<void> {

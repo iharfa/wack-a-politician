@@ -17,12 +17,25 @@ const ensureTable = () =>
     date timestamptz not null default now()
   )`);
 
-export async function GET() {
+export async function GET(req: Request) {
   if (!sql) return NextResponse.json({ error: "DATABASE_URL not set" }, { status: 503 });
   await ensureTable();
-  const rows = await sql`
-    select nickname, score, mode, accuracy, best_streak, date
-    from scores order by score desc limit 50`;
+  const params = new URL(req.url).searchParams;
+  const mode = params.get("mode");
+  const since = params.get("since"); // ISO timestamp — start of the client's local day for daily boards
+  const validMode = mode && ["quick", "classic", "chaos"].includes(mode) ? mode : null;
+  const rows =
+    validMode && since
+      ? await sql`select nickname, score, mode, accuracy, best_streak, date from scores
+          where mode = ${validMode} and date >= ${since} order by score desc limit 50`
+      : validMode
+        ? await sql`select nickname, score, mode, accuracy, best_streak, date from scores
+            where mode = ${validMode} order by score desc limit 50`
+        : since
+          ? await sql`select nickname, score, mode, accuracy, best_streak, date from scores
+              where date >= ${since} order by score desc limit 50`
+          : await sql`select nickname, score, mode, accuracy, best_streak, date from scores
+              order by score desc limit 50`;
   return NextResponse.json(
     rows.map((r) => ({
       nickname: r.nickname,

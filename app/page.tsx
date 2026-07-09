@@ -161,7 +161,7 @@ export default function Home() {
         </div>
       )}
       {state.status === "over" && <GameOverModal state={state} onPlayAgain={() => start(state.mode)} onHome={quit} />}
-      {showLB && <Leaderboard onClose={() => setShowLB(false)} />}
+      {showLB && <Leaderboard onClose={() => setShowLB(false)} initialMode={mode} />}
       {showSettings && (
         <SettingsModal settings={settings} onChange={updateSettings} onClose={() => setShowSettings(false)} />
       )}

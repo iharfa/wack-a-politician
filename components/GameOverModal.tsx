@@ -18,11 +18,11 @@ export default function GameOverModal({ state, onPlayAgain, onHome }: Props) {
   const accuracy = total ? Math.round((state.hits / total) * 100) : 0;
 
   useEffect(() => {
-    getEntries().then((all) => {
+    getEntries(state.mode).then((all) => {
       const top = all.slice(0, 10);
       setQualifies(state.score > 0 && (top.length < 10 || state.score > Math.min(...top.map((e) => e.score))));
     });
-  }, [state.score]);
+  }, [state.score, state.mode]);
 
   // a save that was in flight when the guard opened makes it moot
   useEffect(() => {
