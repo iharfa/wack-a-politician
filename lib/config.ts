@@ -63,11 +63,11 @@ export interface CharacterDef {
 }
 
 export const CHARACTERS: Record<CharacterType, CharacterDef> = {
-  regular: { name: "Senator Slick", emoji: "🤵", image: null, points: 10, bg: "bg-[var(--color-char-regular)]" },
-  fast: { name: "Fast Talker", emoji: "🗣️", image: null, points: 25, bg: "bg-[var(--color-char-fast)]" },
-  tank: { name: "Thick Skin", emoji: "🎩", image: null, points: 2, bg: "bg-[var(--color-char-tank)]" },
-  decoy: { name: "Honest Citizen", emoji: "👵", image: null, points: -25, bg: "bg-[var(--color-char-decoy)]" },
-  bonus: { name: "The Big Cheese", emoji: "🤑", image: null, points: 200, bg: "bg-[var(--color-char-bonus)]" },
+  regular: { name: "Senator Slick", emoji: "🤵", image: "/characters/regular.png", points: 10, bg: "bg-[var(--color-char-regular)]" },
+  fast: { name: "Fast Talker", emoji: "🗣️", image: "/characters/fast.png", points: 25, bg: "bg-[var(--color-char-fast)]" },
+  tank: { name: "Thick Skin", emoji: "🎩", image: "/characters/tank.png", points: 2, bg: "bg-[var(--color-char-tank)]" },
+  decoy: { name: "Honest Citizen", emoji: "👵", image: "/characters/decoy.png", points: -25, bg: "bg-[var(--color-char-decoy)]" },
+  bonus: { name: "The Big Cheese", emoji: "🤑", image: "/characters/bonus.png", points: 200, bg: "bg-[var(--color-char-bonus)]" },
 };
 
 // "Promoted mode" skin — unlocked by the start-screen hammer easter egg.
