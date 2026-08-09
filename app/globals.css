@@ -7,7 +7,8 @@ html,
 body {
   overscroll-behavior: none;
   background: var(--color-paper);
-  overflow-x: clip;
+  overflow: hidden;
+  height: 100dvh;
 }
 
 body {
@@ -29,7 +30,7 @@ h3,
 }
 
 .wordmark {
-  font-size: clamp(3.2rem, 15vw, 5.5rem);
+  font-size: clamp(2.6rem, min(12vw, 9dvh), 4.5rem);
   line-height: 0.82;
   letter-spacing: -0.005em;
   overflow-wrap: break-word;

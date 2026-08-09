@@ -72,11 +72,11 @@ export default function StartScreen({
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-2.5 overflow-y-auto p-4 text-center">
         <button
           onClick={tapHammer}
           aria-label="Hammer"
-          className={`text-6xl transition-transform active:scale-90 ${phase === "swing" ? "hammer-swing" : ""}`}
+          className={`text-5xl transition-transform active:scale-90 ${phase === "swing" ? "hammer-swing" : ""}`}
         >
           🔨
         </button>
@@ -90,17 +90,17 @@ export default function StartScreen({
           <br />
           <span className="text-[var(--color-accent)]">Politician</span>
         </h1>
-        <p className="max-w-sm text-sm font-bold text-[var(--color-ink-2)]">Bonk the spin before it spins you.</p>
-        <div className="ornament" aria-hidden>
+        <p className="max-w-sm text-xs font-bold text-[var(--color-ink-2)]">Bonk the spin before it spins you.</p>
+        <div className="ornament text-sm" aria-hidden>
           ✱ ✱ ✱ ✱
         </div>
 
-        <div className="flex w-full max-w-sm flex-col gap-2.5">
+        <div className="flex w-full max-w-sm flex-col gap-2">
           {(Object.keys(MODES) as GameMode[]).map((m) => (
             <button
               key={m}
               onClick={() => setMode(m)}
-              className={`btn flex items-center justify-between px-4 py-3 text-left ${
+              className={`btn flex items-center justify-between px-4 py-2.5 text-left ${
                 mode === m
                   ? "bg-[var(--color-accent)] text-[var(--color-accent-ink)]"
                   : "bg-[var(--color-paper)] text-[var(--color-ink)]"
@@ -116,30 +116,30 @@ export default function StartScreen({
 
         <button
           onClick={onStart}
-          className="btn w-full max-w-sm bg-[var(--color-accent-2)] py-4 text-2xl text-[var(--color-paper)]"
+          className="btn w-full max-w-sm bg-[var(--color-accent-2)] py-3 text-xl text-[var(--color-paper)]"
         >
           Start ▶
         </button>
 
-        <div className="flex w-full max-w-sm gap-2.5">
-          <button onClick={onLeaderboard} className="btn flex-1 bg-[var(--color-paper)] py-3 text-xs">
+        <div className="flex w-full max-w-sm gap-2">
+          <button onClick={onLeaderboard} className="btn flex-1 bg-[var(--color-paper)] py-2.5 text-xs">
             ◆ Scores
           </button>
-          <button onClick={() => setShowInfo(true)} className="btn flex-1 bg-[var(--color-paper)] py-3 text-xs">
+          <button onClick={() => setShowInfo(true)} className="btn flex-1 bg-[var(--color-paper)] py-2.5 text-xs">
             ◆ How to play
           </button>
-          <button onClick={onSettings} className="btn flex-1 bg-[var(--color-paper)] py-3 text-xs">
+          <button onClick={onSettings} className="btn flex-1 bg-[var(--color-paper)] py-2.5 text-xs">
             ◆ Settings
           </button>
         </div>
 
         {canInstall && (
-          <button onClick={onInstall} className="btn w-full max-w-sm bg-[var(--color-paper)] py-3 text-sm">
+          <button onClick={onInstall} className="btn w-full max-w-sm bg-[var(--color-paper)] py-2.5 text-sm">
             ◆ Install the app
           </button>
         )}
 
-        <div className="max-w-sm text-xs text-[var(--color-muted)]">
+        <div className="max-w-sm text-[11px] leading-tight text-[var(--color-muted)]">
           <p className="mb-1">
             Keys: <b>Q W E</b> / <b>A S D</b> / <b>Z X C</b> — or the numpad. On mobile, just tap.
           </p>

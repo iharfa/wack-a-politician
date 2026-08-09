@@ -104,7 +104,7 @@ export default function Home() {
 
   return (
     <main
-      className={`fixed inset-0 select-none overflow-hidden bg-[var(--color-paper)] text-[var(--color-ink)] ${
+      className={`fixed inset-x-0 top-0 h-dvh select-none overflow-hidden bg-[var(--color-paper)] text-[var(--color-ink)] ${
         settings.reducedMotion ? "reduce-motion" : ""
       } ${promoted ? "promoted" : ""}`}
     >
