@@ -6,6 +6,8 @@ import Leaderboard from "@/components/Leaderboard";
 import ScorePanel from "@/components/ScorePanel";
 import SettingsModal from "@/components/SettingsModal";
 import StartScreen from "@/components/StartScreen";
+import { MODES } from "@/lib/config";
+import { initTracking, track } from "@/lib/track";
 import type { GameMode, Settings } from "@/lib/types";
 import { useGame, type FxEvent } from "@/lib/useGame";
 
@@ -54,9 +56,22 @@ export default function Home() {
   const answerQuit = (n: number) => {
     const target = quitConfirm?.target;
     setQuitConfirm(null);
-    if (n === target) quit();
-    else resume();
+    if (n === target) {
+      track("play", { mode: state.mode, duration: Math.round(MODES[state.mode].duration - state.timeLeft) });
+      quit();
+    } else {
+      resume();
+    }
   };
+
+  // log completed rounds
+  const prevStatus = useRef(state.status);
+  useEffect(() => {
+    if (prevStatus.current === "playing" && state.status === "over") {
+      track("play", { mode: state.mode, duration: MODES[state.mode].duration });
+    }
+    prevStatus.current = state.status;
+  }, [state.status, state.mode]);
 
   useEffect(() => {
     try {
@@ -78,6 +93,7 @@ export default function Home() {
 
   // PWA: service worker + install prompt
   useEffect(() => {
+    initTracking();
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
     const onPrompt = (e: Event) => {
       e.preventDefault();
