@@ -106,7 +106,7 @@ export default function Home() {
     <main
       className={`fixed inset-0 select-none overflow-hidden bg-[var(--color-paper)] text-[var(--color-ink)] ${
         settings.reducedMotion ? "reduce-motion" : ""
-      }`}
+      } ${promoted ? "promoted" : ""}`}
     >
       {!inRound ? (
         <StartScreen

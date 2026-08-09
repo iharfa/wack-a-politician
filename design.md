@@ -67,3 +67,10 @@ Carnival · drop: **Diner Sign** (campaign-poster Americana — cream, cherry re
 ## What screens MAY differ on
 - Which accent leads (title = red-led, board panel = navy-led)
 - Density (game screen stays sparse for legibility at speed)
+
+## Variants
+- **Promoted mode** (hammer easter egg) swaps the palette to the Maldives flag
+  drop — white paper, flag red oklch(52% 0.21 22) ≈ #C8102E, flag green
+  oklch(52% 0.14 155) ≈ #00843D — via the `.promoted` token override in
+  `tokens.css`. Structure, type, shadows, and CTA voice are unchanged; only
+  token values move, per the amend-design.md-first rule.

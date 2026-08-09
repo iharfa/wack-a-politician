@@ -40,3 +40,19 @@
   --dur-short: 160ms;
   --radius-card: 0;
 }
+
+/* Promoted mode — Maldives flag drop: red (#C8102E), green (#00843D), white.
+   Scoped override; every component reads these tokens so the whole app reskins. */
+.promoted {
+  --color-paper: oklch(98% 0.004 140);
+  --color-paper-2: oklch(94% 0.012 140);
+  --color-paper-3: oklch(88% 0.02 145);
+  --color-ink: oklch(18% 0.03 155);
+  --color-ink-2: oklch(30% 0.035 155);
+  --color-muted: oklch(46% 0.03 150);
+  --color-rule: oklch(52% 0.14 155);
+  --color-accent: oklch(52% 0.21 22);
+  --color-accent-2: oklch(52% 0.14 155);
+  --color-accent-ink: oklch(98% 0.004 140);
+  --color-focus: oklch(52% 0.14 155);
+}
