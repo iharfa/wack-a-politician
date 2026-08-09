@@ -80,12 +80,14 @@ export const PROMOTED_IMAGES: Record<CharacterType, string> = {
   bonus: "/skin/bonus.png",
 };
 
-export const POWERUPS: Record<PowerupType, { name: string; emoji: string; duration: number }> = {
-  freeze: { name: "Freeze Time", emoji: "🧊", duration: 5000 },
-  double: { name: "Double Points", emoji: "💰", duration: 8000 },
-  slow: { name: "Slow Motion", emoji: "🐢", duration: 8000 },
-  shield: { name: "Streak Shield", emoji: "🛡️", duration: 0 },
-  sweep: { name: "Clean Sweep", emoji: "🧹", duration: 0 },
+// Powerup art slots: drop files in /public/powerups (512x512, circle-safe).
+// The in-game orb falls back to the emoji whenever the image is missing.
+export const POWERUPS: Record<PowerupType, { name: string; emoji: string; duration: number; image: string | null }> = {
+  freeze: { name: "Freeze Time", emoji: "🧊", duration: 5000, image: "/powerups/freeze.png" },
+  double: { name: "Double Points", emoji: "💰", duration: 8000, image: "/powerups/double.png" },
+  slow: { name: "Slow Motion", emoji: "🐢", duration: 8000, image: "/powerups/slow.png" },
+  shield: { name: "Streak Shield", emoji: "🛡️", duration: 0, image: "/powerups/shield.png" },
+  sweep: { name: "Clean Sweep", emoji: "🧹", duration: 0, image: "/powerups/sweep.png" },
 };
 
 export const BONK_WORDS = ["BONK!", "PROMISE BROKEN!", "SPIN ALERT!", "U-TURN!", "MANIFESTO MODE!", "OUT OF OFFICE!"];

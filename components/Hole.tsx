@@ -1,8 +1,20 @@
 "use client";
+import { useState } from "react";
 import { POWERUPS } from "@/lib/config";
 import type { Entity, PowerupType } from "@/lib/types";
 import type { FxEvent } from "@/lib/useGame";
 import Character from "./Character";
+
+function PowerupIcon({ type }: { type: PowerupType }) {
+  const def = POWERUPS[type];
+  const [failed, setFailed] = useState(false);
+  return def.image && !failed ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={def.image} alt={def.name} onError={() => setFailed(true)} className="h-full w-full rounded-full object-cover" />
+  ) : (
+    <span>{def.emoji}</span>
+  );
+}
 
 const TONE_COLOR = {
   good: "text-[var(--color-paper)]",
@@ -36,8 +48,8 @@ export default function Hole({ index, hint, showHint, entity, fx, skin, onWhack 
           <Character key={entity.id} entity={entity} skin={skin} />
         ) : (
           <div className="gift pointer-events-none absolute inset-0 flex items-center justify-center">
-            <span className="flex h-3/5 w-3/5 items-center justify-center rounded-full border-2 border-[var(--color-ink)] bg-[var(--color-accent-2)] text-3xl shadow-[2px_2px_0_var(--color-ink)] sm:text-4xl">
-              {POWERUPS[entity.type as PowerupType].emoji}
+            <span className="flex h-3/5 w-3/5 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-ink)] bg-[var(--color-accent-2)] text-3xl shadow-[2px_2px_0_var(--color-ink)] sm:text-4xl">
+              <PowerupIcon type={entity.type as PowerupType} />
             </span>
           </div>
         ))}
