@@ -129,6 +129,27 @@ h3,
   animation: bonk 0.65s var(--ease-out) forwards;
 }
 
+/* sweeping glimmer across powerup orbs */
+@keyframes shine {
+  0% {
+    transform: translateX(-160%) rotate(20deg);
+  }
+  55%,
+  100% {
+    transform: translateX(260%) rotate(20deg);
+  }
+}
+.shine::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+  animation: shine 2.2s linear infinite;
+}
+
 @keyframes gift-pulse {
   0%,
   100% {

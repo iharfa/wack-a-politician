@@ -12,6 +12,13 @@
   --color-accent-ink: oklch(95% 0.035 90);
   --color-focus: oklch(30% 0.16 250);
 
+  /* powerup colour coding — orb tints per type */
+  --color-pu-freeze: oklch(85% 0.05 230);
+  --color-pu-double: oklch(85% 0.13 90);
+  --color-pu-slow: oklch(80% 0.1 145);
+  --color-pu-shield: oklch(78% 0.03 260);
+  --color-pu-sweep: oklch(80% 0.07 70);
+
   /* game-character tags — tuned to the Diner Sign palette */
   --color-char-regular: oklch(78% 0.09 240);
   --color-char-fast: oklch(78% 0.14 60);

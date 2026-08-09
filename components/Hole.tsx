@@ -10,7 +10,7 @@ function PowerupIcon({ type }: { type: PowerupType }) {
   const [failed, setFailed] = useState(false);
   return def.image && !failed ? (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={def.image} alt={def.name} onError={() => setFailed(true)} className="h-full w-full rounded-full object-cover" />
+    <img src={def.image} alt={def.name} onError={() => setFailed(true)} className="h-full w-full object-contain p-1" />
   ) : (
     <span>{def.emoji}</span>
   );
@@ -48,7 +48,10 @@ export default function Hole({ index, hint, showHint, entity, fx, skin, onWhack 
           <Character key={entity.id} entity={entity} skin={skin} />
         ) : (
           <div className="gift pointer-events-none absolute inset-0 flex items-center justify-center">
-            <span className="flex h-3/5 w-3/5 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-ink)] bg-[var(--color-accent-2)] text-3xl shadow-[2px_2px_0_var(--color-ink)] sm:text-4xl">
+            <span
+              className="shine relative flex h-3/5 w-3/5 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-ink)] text-3xl shadow-[2px_2px_0_var(--color-ink)] sm:text-4xl"
+              style={{ background: `var(--color-pu-${entity.type})` }}
+            >
               <PowerupIcon type={entity.type as PowerupType} />
             </span>
           </div>
